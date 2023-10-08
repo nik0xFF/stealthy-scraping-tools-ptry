@@ -1,7 +1,5 @@
-import time
-import random
-from behavior.behavior import humanMove
-from behavior.sst_utils import *
+from src.html_assassin.behavior.behavior import human_move
+from src.html_assassin.behavior.sst_utils import *
 
 """
 Very simple HTML crawl of a website.
@@ -16,7 +14,7 @@ def main():
     # to fool bot systems
     coords = getCoords('body')
     print('Clicking on coordinates ' + str(coords))
-    humanMove(*coords)
+    human_move(*coords)
     time.sleep(random.uniform(0.5, 1.0))
 
     # finally get the page source

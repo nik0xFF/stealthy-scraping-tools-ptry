@@ -69,7 +69,7 @@ I use `fluxbox` as a tiny window manager and `x11vnc` (Virtual Network Computing
 
 Build the Dockerfile:
 
-```
+```bash
 docker build -t sst:0.0.1 .
 ```
 
@@ -82,7 +82,7 @@ Hint: Avoid chrome in docker crashing: <https://github.com/stephen-fox/chrome-do
 
 The docker option `--shm-size=2g` is really important:
 
-```
+```bash
 docker run --cap-add=NET_ADMIN --network="host" --shm-size=2g sst:0.0.1
 ```
 
@@ -91,3 +91,26 @@ docker run --cap-add=NET_ADMIN --network="host" --shm-size=2g sst:0.0.1
 + Look at Kernel/OS level mouse/keyboard control commands (Ditch `pyautogui`)
 + Use the math from [ghost-cursor](https://github.com/Xetera/ghost-cursor)
 + Create a set of typign recordings and use it to derive rules for bot writing
+
+## RUN on WSL 2
+```bash
+sudo apt-get install python3-tk python3-dev
+```
+
+```bash
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt -y install ./google-chrome-stable_current_amd64.deb
+```
+
+```bash
+sudo service dbus start && \
+export XDG_RUNTIME_DIR=/run/user/$(id -u) && \
+sudo mkdir $XDG_RUNTIME_DIR && \
+sudo chmod 700 $XDG_RUNTIME_DIR && \
+sudo chown $(id -un):$(id -gn) $XDG_RUNTIME_DIR && \
+export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+```
+
+Start dbus daemon 
+```bash
+dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only
+```

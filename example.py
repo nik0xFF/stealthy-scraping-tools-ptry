@@ -1,7 +1,5 @@
-import time
-import random
-from behavior.behavior import humanMove, humanTyping
-from behavior.sst_utils import *
+from src.html_assassin.behavior.behavior import human_move, human_typing
+from src.html_assassin.behavior.sst_utils import *
 
 """
 You might have to adjust some coordinates. 
@@ -22,40 +20,40 @@ def main():
     print('Trying to click challenge link')
     coords = getCoords('li:nth-of-type(3) a')
     print('Clicking on coordinates ' + str(coords))
-    humanMove(*coords)
+    human_move(*coords)
     time.sleep(random.uniform(0.5, 1.0))
 
     # enter username
     username = getCoords('input[name="userName"]')
-    humanMove(*username, clicks=2)
+    human_move(*username, clicks=2)
     time.sleep(random.uniform(0.25, 1.25))
-    humanTyping('IamNotABotISwear\n', speed=(0.005, 0.008))
+    human_typing('IamNotABotISwear\n', speed=(0.005, 0.008))
 
     time.sleep(random.uniform(0.5, 1.0))
 
     # enter email
     email = getCoords('input[name="eMail"]')
-    humanMove(*email, clicks=3)
+    human_move(*email, clicks=3)
     time.sleep(random.uniform(0.25, 1.25))
-    humanTyping('bot@spambot.com\n', speed=(0.005, 0.008))
+    human_typing('bot@spambot.com\n', speed=(0.005, 0.008))
 
     time.sleep(random.uniform(0.5, 1.0))
 
     # agree to the terms
     terms = getCoords('input[name="terms"]')
-    humanMove(*terms)
+    human_move(*terms)
 
     # select cats
     cat = getCoords('#bigCat')
-    humanMove(*cat)
+    human_move(*cat)
 
     # submit
     submit = getCoords('#submit')
-    humanMove(*submit)
+    human_move(*submit)
 
     # press the final enter
     time.sleep(random.uniform(2.5, 3.4))
-    humanTyping('\n', speed=(0.005, 0.008))
+    human_typing('\n', speed=(0.005, 0.008))
 
     # finally get the page source
     text = getPageSource()

@@ -4,7 +4,7 @@ import random
 import subprocess
 import json
 import re
-from behavior.behavior import humanMove, humanTyping
+from src.html_assassin.behavior.behavior import human_move
 from target import target
 import pyautogui
 
@@ -41,7 +41,7 @@ def getKey():
 
 def visitPage():
   # @UPDATE COORDINATES HERE
-  humanMove(168, 79) # click on the address bar to enter URL
+  human_move(168, 79) # click on the address bar to enter URL
   pyautogui.typewrite(target)
   # the following is not necessary, because JavaScript cannot record 
   # keydown/keyup events in the address bar
@@ -67,7 +67,7 @@ def main():
         x = parsed['x'] + random.randrange(0, int(parsed['width']))
         y = parsed['y'] + random.randrange(0, int(parsed['height']))
         # print(f'x={x}, y={y}')
-        humanMove(x, y)
+        human_move(x, y)
         time.sleep(random.uniform(1.15, 1.74))
         key = getKey()
         if key == 'done':

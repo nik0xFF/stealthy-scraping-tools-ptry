@@ -1,7 +1,5 @@
-import time
-import random
-from behavior.sst_utils import *
-from behavior.behavior import humanMove, humanScroll, press, typeNormal, clickNormal, typeWrite
+from src.html_assassin.behavior.sst_utils import *
+from src.html_assassin.behavior.behavior import human_move, human_scroll, press, type_normal
 
 """
 this is an example how to scrape www.lufthansa.de with stealthy-scraping-tools
@@ -35,8 +33,8 @@ def main():
     # it skews with coordinates
     # x:1903 y:114 screen:0 window:195035139
     # x:1889 y:113 screen:0 window:195035139
-    humanMove(1893, 103)
-    humanMove(1889, 103)
+    human_move(1893, 103)
+    human_move(1889, 103)
     time.sleep(random.uniform(2.5, 3.5))
 
   for i in range(150):
@@ -51,7 +49,7 @@ def main():
       try:
         cookie_accept = getCoords('#cm-acceptAll')
         if cookie_accept:
-          humanMove(*cookie_accept, clicks=1)
+          human_move(*cookie_accept, clicks=1)
           time.sleep(random.uniform(0.25, 1.25))
       except Exception as e:
         print('No cookies to accept, #cm-acceptAll not found')
@@ -60,9 +58,9 @@ def main():
     try:
       input_loc = getCoords('input[placeholder="Nach"]')
       print('Enter Departure ' + str(input_loc))
-      humanMove(*input_loc, clicks=2)
+      human_move(*input_loc, clicks=2)
       time.sleep(random.uniform(0.25, 1.25))
-      typeNormal(random.choice(['Berlin', 'Paris', 'Tel Aviv', 'Stockholm', 'Bogota', 'Bangkok', 'New York']))
+      type_normal(random.choice(['Berlin', 'Paris', 'Tel Aviv', 'Stockholm', 'Bogota', 'Bangkok', 'New York']))
       time.sleep(random.uniform(1.5, 2.5))
       press('down')
       time.sleep(random.uniform(0.5, 1.0))
@@ -76,7 +74,7 @@ def main():
     try:
       backdate = getCoords('input[placeholder="Rückflugdatum"]')
       print('backdate ' + str(backdate))
-      humanMove(*backdate, clicks=1)
+      human_move(*backdate, clicks=1)
       time.sleep(random.uniform(4.55, 5.55))
     except Exception as e:
       print(f'[{i}] Could not click on return value. Leaving untouched.')
@@ -85,7 +83,7 @@ def main():
     try:
       datetile = getCoords(random.choice(['[aria-label^="Choose Samstag, 25 Dezember 2021"]', '[aria-label^="Choose Sonntag, 26 Dezember 2021"]']))
       print('datetile ' + str(datetile))
-      humanMove(*datetile, clicks=1)
+      human_move(*datetile, clicks=1)
       time.sleep(random.uniform(2.25, 3.25))
     except Exception as e:
       print(f'[{i}] Could not select return date. Keeping default value.')
@@ -94,14 +92,14 @@ def main():
     try:
       submit = getCoords('[type="submit"]')
       print('Submit ' + str(submit))
-      humanMove(*submit)
+      human_move(*submit)
     except Exception as e:
       print(f'[{i}] Could not submit search. Blocked?')
       continue
 
     # wait for quite some time
     time.sleep(random.uniform(10, 14))
-    humanScroll(2, (5, 20), -1)
+    human_scroll(2, (5, 20), -1)
 
     try:
       calendar = getCoords('#page .calendarTab')
