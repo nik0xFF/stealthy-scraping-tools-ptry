@@ -28,5 +28,5 @@ async function evalCommand(command) {
 const argLength = process.argv.length;
 
 if (argLength === 2) {
-  evalCommand(fs.readFileSync('/tmp/evalCommand.txt').toString());
+  evalCommand(fs.readFileSync('./tmp/evalCommand.txt').toString());
 }

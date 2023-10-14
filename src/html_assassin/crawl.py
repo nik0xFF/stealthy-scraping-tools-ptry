@@ -1,29 +1,31 @@
-from src.html_assassin.behavior.behavior import human_move
-from src.html_assassin.behavior.sst_utils import *
-
 """
 Very simple HTML crawl of a website.
 """
 
+import random
+import time
+from logging import getLogger
+
+from html_assassin.behavior.sst_utils import start_browser, get_coords, get_page_source, close_browser
+from src.html_assassin.behavior.behavior import human_move
+
+LOGGER = getLogger(__name__)
+
 
 def main():
-    print('Trying to start browser')
-    startBrowser(['www.hetzner.com\n'])
+    print("Trying to start browser")
+    start_browser(["https://www.homegate.ch/de\n"])
 
     # do a bit of random moving around
     # to fool bot systems
-    coords = getCoords('body')
-    print('Clicking on coordinates ' + str(coords))
+    coords = get_coords('[data-cy="Locations_searchFieldOpener"]', highlight_bb=True)
+    print("Clicking on coordinates " + str(coords))
     human_move(*coords)
     time.sleep(random.uniform(0.5, 1.0))
 
-    # finally get the page source
-    text = getPageSource()
-    print('Got {} bytes of HTML data'.format(len(text)))
-
     # close the browser
-    closeBrowser()
+    close_browser()
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

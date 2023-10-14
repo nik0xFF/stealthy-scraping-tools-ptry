@@ -1,0 +1,22 @@
+{
+  "name": "html-assassin",
+  "version": "1.0.0",
+  "description": "This is the js/ts part of the html_assassin crawler ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nik0xFF/stealthy-scraping-tools-ptry.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/nik0xFF/stealthy-scraping-tools-ptry/issues"
+  },
+  "homepage": "https://github.com/nik0xFF/stealthy-scraping-tools-ptry#readme",
+  "dependencies": {
+    "chrome-remote-interface": "^0.33.0"
+  }
+}

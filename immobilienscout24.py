@@ -1,6 +1,6 @@
 import pprint
 from src.html_assassin.behavior.sst_utils import *
-from src.html_assassin.behavior.behavior import human_move, human_scroll, type_normal, get_dim
+from src.html_assassin.behavior.behavior import human_move, human_scroll, type_with_average_speed, get_dim
 import immo_env
 
 """
@@ -56,40 +56,40 @@ def contact(listing):
   goto('https://www.immobilienscout24.de' + listing.get('url'))
   moveRandomly(steps=4)
 
-  already_contacted = getCoords('.is24-icon-heart-Favorite-glyph') is not None
+  already_contacted = get_coords('.is24-icon-heart-Favorite-glyph') is not None
   if already_contacted:
     print('Listing {} already contacted'.format(listing.get('url')))
     return True
 
   # contact
-  contact_button = getCoords("a span.palm-hide.email-button-desk-text.font-standard")
+  contact_button = get_coords("a span.palm-hide.email-button-desk-text.font-standard")
   human_move(*contact_button, clicks=1)
   time.sleep(random.uniform(4, 5.5))
 
   # check if message already entered
-  already_entered = json.loads(evalJS('document.getElementById("contactForm-Message").value.includes("und Langfristiges")')) is True
+  already_entered = json.loads(eval_js('document.getElementById("contactForm-Message").value.includes("und Langfristiges")')) is True
   if not already_entered:
-    evalJS('document.getElementById("contactForm-Message").value = `{}`'.format(''))
+    eval_js('document.getElementById("contactForm-Message").value = `{}`'.format(''))
     # input message
-    input_el = getCoords("#contactForm-Message")
+    input_el = get_coords("#contactForm-Message")
     human_move(*input_el, clicks=3)
     # typeNormal('Guten Tag, ')
     # time.sleep(random.uniform(0.5, 1.1))
-    evalJS('document.getElementById("contactForm-Message").value = `{}`'.format(immo_env.MESSAGE))
+    eval_js('document.getElementById("contactForm-Message").value = `{}`'.format(immo_env.MESSAGE))
     time.sleep(random.uniform(0.5, 1.1))
 
   time.sleep(random.uniform(0.5, 1.1))
 
-  no_pets = getCoords('[for="contactForm-hasPets.no"]')
+  no_pets = get_coords('[for="contactForm-hasPets.no"]')
   if no_pets:
     human_scroll(4, (5, 20), -1)
     time.sleep(random.uniform(1.5, 1.5))
-    no_pets = getCoords('[for="contactForm-hasPets.no"]')
+    no_pets = get_coords('[for="contactForm-hasPets.no"]')
     human_move(*no_pets, clicks=1)
-    submit = getCoords('button.button-primary.padding-horizontal-m')
+    submit = get_coords('button.button-primary.padding-horizontal-m')
     human_move(*submit, clicks=1)
   else:
-    submit = getCoords('button[data-qa="sendButtonBasic"]')
+    submit = get_coords('button[data-qa="sendButtonBasic"]')
     human_move(*submit, clicks=1)
 
   time.sleep(random.uniform(3.9, 5.9))
@@ -97,8 +97,8 @@ def contact(listing):
 
 
 def is_detected():
-  detected = json.loads(evalJS("JSON.stringify(document.body.textContent.includes('Warum haben wir deine Anfrage blockiert?'));")) == True
-  other = json.loads(evalJS("JSON.stringify(document.body.textContent.includes('Sicherheitsabfrage'));")) == True
+  detected = json.loads(eval_js("JSON.stringify(document.body.textContent.includes('Warum haben wir deine Anfrage blockiert?'));")) == True
+  other = json.loads(eval_js("JSON.stringify(document.body.textContent.includes('Sicherheitsabfrage'));")) == True
   if detected or other:
     print('Got detected as a bot. Aborting.')
     sys.exit(0)
@@ -113,7 +113,7 @@ def main():
     startVNC()
 
   # startBrowser(args=['--incognito'])
-  startBrowser(args=[])
+  start_browser(args=[])
 
   if os.getenv('DOCKER') == '1':
     # close the annoying chrome error message bar
@@ -137,18 +137,18 @@ def main():
     time.sleep(random.uniform(3.5, 4.5))
 
     # login with username and password
-    profile_button = getCoords('#link_loginAccountLink')
+    profile_button = get_coords('#link_loginAccountLink')
     human_move(*profile_button, clicks=0)
     time.sleep(random.uniform(0.5, 2))
 
-    login_button = getCoords("#is24-dropdown > div.MyscoutDropdownV2_LoginContainer__3X0hy.topnavigation__sso-login__link-list--logged-out > a")
+    login_button = get_coords("#is24-dropdown > div.MyscoutDropdownV2_LoginContainer__3X0hy.topnavigation__sso-login__link-list--logged-out > a")
     # if login button not visible, we are logged in probably
     if login_button:
       human_move(*login_button, clicks=1)
 
       time.sleep(random.uniform(2.5, 3))
 
-      user_input = getCoords('#username')
+      user_input = get_coords('#username')
       if not user_input:
         raise Exception('Cannot find username input field by id #username')
 
@@ -156,18 +156,18 @@ def main():
 
       human_move(*user_input, clicks=1)
       time.sleep(random.uniform(0.25, 1.25))
-      type_normal(immo_env.EMAIL)
+      type_with_average_speed(immo_env.EMAIL)
       time.sleep(random.uniform(0.25, 1.25))
 
-      human_move(*getCoords('#submit'), clicks=1)
+      human_move(*get_coords('#submit'), clicks=1)
       time.sleep(random.uniform(2.25, 3.25))
 
-      human_move(*getCoords('#password'), clicks=1)
+      human_move(*get_coords('#password'), clicks=1)
       time.sleep(random.uniform(0.25, 1.25))
-      type_normal(immo_env.PASSWORD)
+      type_with_average_speed(immo_env.PASSWORD)
       time.sleep(random.uniform(1.25, 2.25))
 
-      human_move(*getCoords('#loginOrRegistration'), clicks=1)
+      human_move(*get_coords('#loginOrRegistration'), clicks=1)
       time.sleep(random.uniform(2.25, 3.55))
 
     goto(SEARCH_URL)
@@ -197,7 +197,7 @@ def main():
   });
   JSON.stringify(res);"""
 
-    output = evalJS(parse_listings)
+    output = eval_js(parse_listings)
     listings = json.loads(output)
     # pprint.pprint(listings)
     filtered_listings = {}
@@ -241,7 +241,7 @@ def main():
       json.dump(apartments, f)
       print('Updated database')
 
-    closeBrowser()
+    close_browser()
   except Exception as e:
     print('Error: {}'.format(e))
     is_detected()

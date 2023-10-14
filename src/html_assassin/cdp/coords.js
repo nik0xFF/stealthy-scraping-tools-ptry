@@ -129,7 +129,7 @@ async function getCoordsIframe(css_selector, iframe) {
 
     await Runtime.executionContextDestroyed(info => {
       for (let frameId in frameIdToContextId) {
-        if (frameIdToContextId[frameId] == info.executionContextId) {
+        if (frameIdToContextId[frameId] === info.executionContextId) {
             delete frameIdToContextId[frameId];
             break;
         }

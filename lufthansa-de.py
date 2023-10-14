@@ -1,5 +1,5 @@
 from src.html_assassin.behavior.sst_utils import *
-from src.html_assassin.behavior.behavior import human_move, human_scroll, press, type_normal
+from src.html_assassin.behavior.behavior import human_move, human_scroll, press, type_with_average_speed
 
 """
 this is an example how to scrape www.lufthansa.de with stealthy-scraping-tools
@@ -26,7 +26,7 @@ def main():
     startFluxbox()
     startVNC()
 
-  startBrowser(args=[])
+  start_browser(args=[])
 
   if os.getenv('DOCKER') == '1':
     # close the annoying chrome error message bar
@@ -47,7 +47,7 @@ def main():
     # accept cookies?
     if i == 0:
       try:
-        cookie_accept = getCoords('#cm-acceptAll')
+        cookie_accept = get_coords('#cm-acceptAll')
         if cookie_accept:
           human_move(*cookie_accept, clicks=1)
           time.sleep(random.uniform(0.25, 1.25))
@@ -56,11 +56,11 @@ def main():
 
     # enter where to go
     try:
-      input_loc = getCoords('input[placeholder="Nach"]')
+      input_loc = get_coords('input[placeholder="Nach"]')
       print('Enter Departure ' + str(input_loc))
       human_move(*input_loc, clicks=2)
       time.sleep(random.uniform(0.25, 1.25))
-      type_normal(random.choice(['Berlin', 'Paris', 'Tel Aviv', 'Stockholm', 'Bogota', 'Bangkok', 'New York']))
+      type_with_average_speed(random.choice(['Berlin', 'Paris', 'Tel Aviv', 'Stockholm', 'Bogota', 'Bangkok', 'New York']))
       time.sleep(random.uniform(1.5, 2.5))
       press('down')
       time.sleep(random.uniform(0.5, 1.0))
@@ -72,7 +72,7 @@ def main():
 
     # input return date
     try:
-      backdate = getCoords('input[placeholder="Rückflugdatum"]')
+      backdate = get_coords('input[placeholder="Rückflugdatum"]')
       print('backdate ' + str(backdate))
       human_move(*backdate, clicks=1)
       time.sleep(random.uniform(4.55, 5.55))
@@ -81,7 +81,7 @@ def main():
 
     # enter departure date
     try:
-      datetile = getCoords(random.choice(['[aria-label^="Choose Samstag, 25 Dezember 2021"]', '[aria-label^="Choose Sonntag, 26 Dezember 2021"]']))
+      datetile = get_coords(random.choice(['[aria-label^="Choose Samstag, 25 Dezember 2021"]', '[aria-label^="Choose Sonntag, 26 Dezember 2021"]']))
       print('datetile ' + str(datetile))
       human_move(*datetile, clicks=1)
       time.sleep(random.uniform(2.25, 3.25))
@@ -90,7 +90,7 @@ def main():
 
     # submit
     try:
-      submit = getCoords('[type="submit"]')
+      submit = get_coords('[type="submit"]')
       print('Submit ' + str(submit))
       human_move(*submit)
     except Exception as e:
@@ -102,7 +102,7 @@ def main():
     human_scroll(2, (5, 20), -1)
 
     try:
-      calendar = getCoords('#page .calendarTab')
+      calendar = get_coords('#page .calendarTab')
       if calendar:
         print(f'[{i}] Flight Results loaded!')
     except Exception as e:

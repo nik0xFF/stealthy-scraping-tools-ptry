@@ -1,0 +1,88 @@
+[tool.poetry]
+name = "html_assassin"
+version = "0.1.0"
+description = "HTML Scraper"
+authors = ["Your Name <you@example.com>"]
+license = "n"
+readme = "README.md"
+
+packages = [{include = "html_assassin", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+MouseInfo= "^0.1.3"
+Pillow="^8.4.0"
+PyAutoGUI="^0.9.53"
+PyGetWindow="^0.0.9"
+PyMsgBox="^1.0.9"
+pyperclip="^1.8.2"
+PyRect="^0.1.4"
+PyScreeze="^0.1.28"
+python3-xlib="^0.15"
+pytweening="^1.0.4"
+python-xlib = "^0.33"
+
+[tool.poetry.group.dev.dependencies]
+black = "^22.3.0"                                   # The uncompromising code formatter.
+coverage = {extras = ["toml"], version = "^6.4.1"}  # Code coverage measurement for Python
+unittest-xml-reporting = "^3.2.0"                   # unittest-based test runner with Ant/JUnit like XML reporting.
+pre-commit = "^2.19.0"                              # A framework for managing and maintaining multi-language pre-commit hooks.
+pre-commit-hooks = "^4.2.0"                         # Some out-of-the-box hooks for pre-commit.
+pydocstyle = "^6.1.1"                               # Python docstring style checker
+pylint = "^2.14.1"                                  # python code static checker
+pylint-sonarjson = "^1.0.6"                         # Plugin for pylint to export severities of issues to sonar
+isort = "^5.12.0"                                   # Tool for reordering python imports
+
+
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry.scripts]
+crawl = 'html_assassin.crawl:main'
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint.main]
+load-plugins = "pylint_sonarjson"
+fail-on = "F,E,W"
+fail-under = 0.0
+
+[tool.pylint.basic]
+good-names = ["i", "j", "k", "n", "s", "d", "ex", "Run", "_", "pk", "x", "y", "df"]
+
+[tool.pylint.format]
+max-line-length = 140
+max-args = 8
+
+[tool.pylint.messages_control]
+disable = [
+    # pydocstyle takes care of this...
+    "missing-module-docstring",
+    "missing-function-docstring",
+    "missing-class-docstring",
+
+    # don't hinder me creating small classes!
+    "too-few-public-methods",
+
+    # reorder-python-imports should know what it's doing
+    "wrong-import-order",
+
+    # can't do much about duplicate imports in two files, I'm afraid...
+    "duplicate-code",
+]
+
+[tool.pylint.miscellaneous]
+notes = []  # don't warn about `TODO` and `FIXME` comments
+
+[tool.pylint.reports]
+output-format = "sonarjson:./sonar_report.json,text"
+
+[tool.pydocstyle]
+match-dir = "[^\\.][^test].*"
+convention = "google"
+
+[tool.coverage.run]
+command_line = "-m xmlrunner discover --output-file junittest.xml"

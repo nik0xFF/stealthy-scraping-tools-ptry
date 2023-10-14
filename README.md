@@ -26,11 +26,52 @@ The browser `google-chrome` must be installed.
 
 Clone the repo:
 
-```
+```bash
 git clone https://github.com/NikolaiT/stealthy-scraping-tools
 cd stealthy-scraping-tools
 ```
 
+## Install on Ubuntu 20.04@WSL 2
+
+clone the project in your home directory not on a mounted drive, to avoid permission issues when running pip
+
+Install tk and python c headers
+```bash
+sudo apt-get install python3-tk python3-dev
+```
+
+Install poetry & set it to install the .venv in the project directory 
+```bash
+curl -sSL https://install.python-poetry.org | python3 - && \
+echo  'export POETRY_VIRTUALENVS_IN_PROJECT=true' >> ~/.bashrc && \
+poetry self add poetry-dotenv-plugin
+```
+
+install node.js with npm 
+```bash
+sudo apt install nodejs npm
+```
+
+install chrome
+```bash
+wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt -y install ./google-chrome-stable_current_amd64.deb
+```
+set XDG and dbus
+```bash
+sudo service dbus start && \
+export XDG_RUNTIME_DIR=/run/user/$(id -u) && \
+sudo mkdir $XDG_RUNTIME_DIR && \
+sudo chmod 700 $XDG_RUNTIME_DIR && \
+sudo chown $(id -un):$(id -gn) $XDG_RUNTIME_DIR && \
+export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
+```
+
+Start dbus daemon
+```bash
+dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only --background
+```
+
+## Install on Ubuntu 18.04 
 Activate an environment with:
 
 ```bash
@@ -92,25 +133,3 @@ docker run --cap-add=NET_ADMIN --network="host" --shm-size=2g sst:0.0.1
 + Use the math from [ghost-cursor](https://github.com/Xetera/ghost-cursor)
 + Create a set of typign recordings and use it to derive rules for bot writing
 
-## RUN on WSL 2
-```bash
-sudo apt-get install python3-tk python3-dev
-```
-
-```bash
-wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb && sudo apt -y install ./google-chrome-stable_current_amd64.deb
-```
-
-```bash
-sudo service dbus start && \
-export XDG_RUNTIME_DIR=/run/user/$(id -u) && \
-sudo mkdir $XDG_RUNTIME_DIR && \
-sudo chmod 700 $XDG_RUNTIME_DIR && \
-sudo chown $(id -un):$(id -gn) $XDG_RUNTIME_DIR && \
-export DBUS_SESSION_BUS_ADDRESS=unix:path=$XDG_RUNTIME_DIR/bus
-```
-
-Start dbus daemon 
-```bash
-dbus-daemon --session --address=$DBUS_SESSION_BUS_ADDRESS --nofork --nopidfile --syslog-only
-```

@@ -14,17 +14,17 @@ the bash command on Linux `xdotool getmouselocation`
 
 def main():
     print('Trying to start browser')
-    startBrowser(['bot.incolumitas.com\n'])
+    start_browser(['bot.incolumitas.com\n'])
 
     # click link to get to the challenge
     print('Trying to click challenge link')
-    coords = getCoords('li:nth-of-type(3) a')
+    coords = get_coords('li:nth-of-type(3) a')
     print('Clicking on coordinates ' + str(coords))
     human_move(*coords)
     time.sleep(random.uniform(0.5, 1.0))
 
     # enter username
-    username = getCoords('input[name="userName"]')
+    username = get_coords('input[name="userName"]')
     human_move(*username, clicks=2)
     time.sleep(random.uniform(0.25, 1.25))
     human_typing('IamNotABotISwear\n', speed=(0.005, 0.008))
@@ -32,7 +32,7 @@ def main():
     time.sleep(random.uniform(0.5, 1.0))
 
     # enter email
-    email = getCoords('input[name="eMail"]')
+    email = get_coords('input[name="eMail"]')
     human_move(*email, clicks=3)
     time.sleep(random.uniform(0.25, 1.25))
     human_typing('bot@spambot.com\n', speed=(0.005, 0.008))
@@ -40,15 +40,15 @@ def main():
     time.sleep(random.uniform(0.5, 1.0))
 
     # agree to the terms
-    terms = getCoords('input[name="terms"]')
+    terms = get_coords('input[name="terms"]')
     human_move(*terms)
 
     # select cats
-    cat = getCoords('#bigCat')
+    cat = get_coords('#bigCat')
     human_move(*cat)
 
     # submit
-    submit = getCoords('#submit')
+    submit = get_coords('#submit')
     human_move(*submit)
 
     # press the final enter
@@ -56,7 +56,7 @@ def main():
     human_typing('\n', speed=(0.005, 0.008))
 
     # finally get the page source
-    text = getPageSource()
+    text = get_page_source()
     print('Got {} bytes of page soure'.format(len(text)))
 
 
