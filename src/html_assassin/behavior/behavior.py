@@ -155,11 +155,11 @@ def click_once(clicks=1):
     pyautogui.click(clicks=clicks, interval=0.25)
 
 
-def type_with_average_apm(text):
+def type_with_average_wpm(text):
     pyautogui.write(text, interval=random.uniform(0.15, 0.25))
 
 
-def type_with_increased_apm(text):
+def type_with_increased_wpm(text):
     pyautogui.write(text, interval=random.uniform(0.045, 0.075))
 
 

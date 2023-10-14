@@ -7,7 +7,7 @@ import json
 import subprocess
 from logging import getLogger
 from pathlib import Path
-
+from html_assassin.behavior.cdp_wrapper import get_coordinates_matching_selector, evaluate_js
 LOGGER = getLogger(__name__)
 
 
@@ -28,16 +28,6 @@ def get_page_source():
     return ps
 
 
-def eval_js(command):
-    with open("/tmp/evalCommand.txt", "w") as f:
-        f.write(command)
-
-    script_path = get_script_path("eval_js.js")
-    cmd = f"node {script_path}"
-    ps = subprocess.check_output(cmd, shell=True)
-    return ps
-
-
 def get_coords(selector, randomize_within_bcr=True, highlight_bb=True):
     """
 
@@ -46,9 +36,8 @@ def get_coords(selector, randomize_within_bcr=True, highlight_bb=True):
     :param highlight_bb:  visually highlight the bounding box for debugging purposes
     :return:
     """
-    script_path = get_script_path("coords.js")
-    cmd = f"node {script_path} '{selector}'"
-    coords = subprocess.check_output(cmd, shell=True)
+
+    coords = get_coordinates_matching_selector(selector)
     coords = coords.decode()
 
     try:
@@ -72,7 +61,7 @@ def get_coords(selector, randomize_within_bcr=True, highlight_bb=True):
                     + selector
                     + """'); if (el) { el.style.border = "2px solid #ff0000"; }"""
             )
-            eval_js(cmd)
+            evaluate_js(cmd)
 
     except Exception as e:
         print("getCoords() failed with Error: {}".format(e))
@@ -97,18 +86,19 @@ def start_browser(
             " --no-first-run --no-default-browser-check 1 > ./logs/out.log 2 > ./logs/err.log &"
         )
     else:
+        log_dir = os.getenv("LOG_DIRECTORY")
         if sys.platform == "darwin":
             # On MacOS Monterey, we need to start Google Chrome
             # in fullscreen mode to get the correct coordinates.
             chrome_path = "/Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome"
             start_cmd = (
                 f"{chrome_path} --remote-debugging-port=9222 --start-maximized {temp_dir_str} {chrome_profile}"
-                f" --disable-notifications --start-fullscreen {arg_str} 1> ./logs/out.log 2> ./logs/err.log &"
+                f" --disable-notifications --start-fullscreen {arg_str} 1> {log_dir}/out.log 2> {log_dir}/err.log &"
             )
         else:
             start_cmd = (
                 f"google-chrome --remote-debugging-port=9222"
-                f" --start-maximized --disable-notifications {arg_str} 1> ./logs/out.log 2> ./logs/err.log &"
+                f" --start-maximized --disable-notifications {arg_str} 1> {log_dir}out.log 2> {log_dir}err.log &"
             )
 
     LOGGER.debug(start_cmd)

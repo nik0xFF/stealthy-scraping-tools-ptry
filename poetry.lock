@@ -65,6 +65,20 @@ files = [
 ]
 
 [[package]]
+name = "chrome-devtools-protocol"
+version = "0.4.0"
+description = "Python type wrappers for Chrome DevTools Protocol (CDP)"
+optional = false
+python-versions = ">=3.7,<4.0"
+files = [
+    {file = "chrome-devtools-protocol-0.4.0.tar.gz", hash = "sha256:eb26b540c2e0bc2e35021e2347e5af2b0c5b9f8d0f5a2136dc64d1ae7e7e9328"},
+    {file = "chrome_devtools_protocol-0.4.0-py3-none-any.whl", hash = "sha256:edf6216e4ee65ab440d220b36f7d4edf36f1bc9a52ec75bfb6556e5bd71a6561"},
+]
+
+[package.dependencies]
+deprecated = ">=1.2.9,<2.0.0"
+
+[[package]]
 name = "click"
 version = "8.1.7"
 description = "Composable command line interface toolkit"
@@ -153,6 +167,23 @@ tomli = {version = "*", optional = true, markers = "python_full_version <= \"3.1
 
 [package.extras]
 toml = ["tomli"]
+
+[[package]]
+name = "deprecated"
+version = "1.2.14"
+description = "Python @deprecated decorator to deprecate old python classes, functions or methods."
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "Deprecated-1.2.14-py2.py3-none-any.whl", hash = "sha256:6fac8b097794a90302bdbb17b9b815e732d3c4720583ff1b198499d78470466c"},
+    {file = "Deprecated-1.2.14.tar.gz", hash = "sha256:e5323eb936458dccc2582dc6f9c322c852a775a27065ff2b0c4970b9d53d01b3"},
+]
+
+[package.dependencies]
+wrapt = ">=1.10,<2"
+
+[package.extras]
+dev = ["PyTest", "PyTest-Cov", "bump2version (<1)", "sphinx (<2)", "tox"]
 
 [[package]]
 name = "dill"
@@ -1180,4 +1211,4 @@ files = [
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "16e2ea1deabe34d6571a1233eaabac12e0f1ad8c82841bab3971a36af09ea8c7"
+content-hash = "2d5d07248a0657937dbea4364580f279d1be1dd7b65ab79fd7600b8d7e024371"

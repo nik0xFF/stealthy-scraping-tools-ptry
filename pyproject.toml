@@ -21,6 +21,7 @@ PyScreeze="^0.1.28"
 python3-xlib="^0.15"
 pytweening="^1.0.4"
 python-xlib = "^0.33"
+chrome-devtools-protocol = "^0.4.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"                                   # The uncompromising code formatter.

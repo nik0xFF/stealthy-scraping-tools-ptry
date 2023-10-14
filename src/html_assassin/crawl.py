@@ -18,7 +18,7 @@ def main():
 
     # do a bit of random moving around
     # to fool bot systems
-    coords = get_coords('[data-cy="Locations_searchFieldOpener"]', highlight_bb=True)
+    coords = get_coords('[class="SearchBar_searchLayer_trzv7"]', highlight_bb=True)
     print("Clicking on coordinates " + str(coords))
     human_move(*coords)
     time.sleep(random.uniform(0.5, 1.0))
