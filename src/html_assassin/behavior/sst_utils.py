@@ -7,6 +7,9 @@ import json
 import subprocess
 from logging import getLogger
 from pathlib import Path
+
+import requests
+
 from html_assassin.behavior.cdp_wrapper import get_coordinates_matching_selector, evaluate_js
 LOGGER = getLogger(__name__)
 
@@ -102,8 +105,14 @@ def start_browser(
             )
 
     LOGGER.debug(start_cmd)
-    subprocess.Popen([start_cmd], shell=True)
+    subp = subprocess.Popen([start_cmd], shell=True, stdout=subprocess.PIPE)
+    LOGGER.info(subp.stdout.read())
     time.sleep(random.uniform(3, 4))
+    # Retrieve DevTools URL
+    response = requests.get('http://127.0.0.1:9222/json/version')
+    return response.json()['webSocketDebuggerUrl']
+
+
 
 
 def close_browser():

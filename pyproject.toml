@@ -21,7 +21,9 @@ PyScreeze="^0.1.28"
 python3-xlib="^0.15"
 pytweening="^1.0.4"
 python-xlib = "^0.33"
-chrome-devtools-protocol = "^0.4.0"
+trio-chrome-devtools-protocol = {path = "/home/nik/IdeaProjects/trio-chrome-devtools-protocol/dist/trio_chrome_devtools_protocol-0.7.0-py3-none-any.whl"}
+pyvirtualdisplay = "^3.0"
+requests = "^2.31.0"
 
 [tool.poetry.group.dev.dependencies]
 black = "^22.3.0"                                   # The uncompromising code formatter.

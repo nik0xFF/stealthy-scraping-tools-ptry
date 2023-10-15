@@ -1,9 +1,27 @@
 from logging import getLogger
-from typing import Tuple
-
-from cdp import page, runtime, browser
+from trio_cdp import runtime, browser, open_cdp, target, page, dom
 
 LOGGER = getLogger(__name__)
+
+
+async def test_open_url(url):
+    async with open_cdp(url) as conn:
+        # Find the first available target (usually a browser tab).
+        targets = await target.get_targets()
+        target_id = targets[0].target_id
+
+        # Create a new session with the chosen target.
+        async with conn.open_session(target_id) as session:
+
+            await page.enable()
+            async with session.wait_for(page.LoadEventFired):
+                await page.navigate('https://www.itworks.com')
+
+            # Extract the page title.
+            root_node = await session.execute(dom.get_document())
+            title_node_id = await session.execute(dom.query_selector(root_node.node_id, 'title'))
+            html = await session.execute(dom.get_outer_html(title_node_id))
+            print(html)
 
 
 def evaluate_js(script: str):
